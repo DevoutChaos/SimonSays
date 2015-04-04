@@ -41,6 +41,7 @@ Update the sprite position
 
 void cRocket::update(float deltaTime)
 {
+	/*
 	if (m_InputMgr->isKeyDown(VK_RIGHT))
 	{
 		spriteRotation += 5.0f;
@@ -83,6 +84,7 @@ void cRocket::update(float deltaTime)
 		// play the firing sound
 		m_SoundMgr->getSnd("Shot")->playAudio(AL_TRUE);
 	}
+	*/
 
 	if (spriteRotation > 360)
 	{

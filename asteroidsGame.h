@@ -1,5 +1,5 @@
 #ifndef _ASTEROIDSGAME_H
-#define _ASTEROIDSGAME_H
+#define _GAME_H
 
 // Card game headers
 #include "cAsteroid.h"

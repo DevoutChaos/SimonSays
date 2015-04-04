@@ -95,7 +95,7 @@ int WINAPI WinMain(HINSTANCE hInstance,
 	theFontMgr->addFont("Space", gameFonts[1], 24);
 
 	// Create vector array of textures
-
+	/*
 	for (int astro = 0; astro < 5; astro++)
 	{
 		theAsteroids.push_back(new cAsteroid);
@@ -109,27 +109,61 @@ int WINAPI WinMain(HINSTANCE hInstance,
 		theAsteroids[astro]->setActive(true);
 		theAsteroids[astro]->setMdlRadius();
 	}
+	*/
 
 
 	cTexture textureBkgd;
-	textureBkgd.createTexture("Images\\starscape1024x768.png");
+	textureBkgd.createTexture("Images\\BackGround_1280x720.png");
 	cBkGround spriteBkgd;
 	spriteBkgd.setSpritePos(glm::vec2(0.0f, 0.0f));
 	spriteBkgd.setTexture(textureBkgd.getTexture());
 	spriteBkgd.setTextureDimensions(textureBkgd.getTWidth(), textureBkgd.getTHeight());
 
-	cTexture rocketTxt;
-	rocketTxt.createTexture("Images\\rocketSprite.png");
-	cRocket rocketSprite;
-	rocketSprite.attachInputMgr(theInputMgr); // Attach the input manager to the sprite
-	rocketSprite.setSpritePos(glm::vec2(512.0f, 380.0f));
-	rocketSprite.setTexture(rocketTxt.getTexture());
-	rocketSprite.setTextureDimensions(rocketTxt.getTWidth(), rocketTxt.getTHeight());
-	rocketSprite.setSpriteCentre();
-	rocketSprite.setRocketVelocity(glm::vec2(0.0f, 0.0f));
+	cTexture blueTxt;
+	blueTxt.createTexture("Images\\BlueSprite_245x245.png");
+	cRocket BlueSprite;
+	BlueSprite.attachInputMgr(theInputMgr); // Attach the input manager to the sprite
+	BlueSprite.setSpritePos(glm::vec2(645.0f, 495.0f));
+	BlueSprite.setTexture(blueTxt.getTexture());
+	BlueSprite.setTextureDimensions(blueTxt.getTWidth(), blueTxt.getTHeight());
+	BlueSprite.setSpriteCentre();
+	BlueSprite.setRocketVelocity(glm::vec2(0.0f, 0.0f));
+
+	cTexture redTxt;
+	redTxt.createTexture("Images\\RedSprite_245x245.png");
+	cRocket RedSprite;
+	RedSprite.attachInputMgr(theInputMgr); // Attach the input manager to the sprite
+	RedSprite.setSpritePos(glm::vec2(645.0f, 240.0f));
+	RedSprite.setTexture(redTxt.getTexture());
+	RedSprite.setTextureDimensions(redTxt.getTWidth(), redTxt.getTHeight());
+	RedSprite.setSpriteCentre();
+	RedSprite.setRocketVelocity(glm::vec2(0.0f, 0.0f));
+
+	cTexture greenTxt;
+	greenTxt.createTexture("Images\\GreenSprite_245x245.png");
+	cRocket GreenSprite;
+	GreenSprite.attachInputMgr(theInputMgr); // Attach the input manager to the sprite
+	GreenSprite.setSpritePos(glm::vec2(390.0f, 495.0f));
+	GreenSprite.setTexture(greenTxt.getTexture());
+	GreenSprite.setTextureDimensions(greenTxt.getTWidth(), greenTxt.getTHeight());
+	GreenSprite.setSpriteCentre();
+	GreenSprite.setRocketVelocity(glm::vec2(0.0f, 0.0f));
+
+	cTexture yellowTxt;
+	yellowTxt.createTexture("Images\\YellowSprite_245x245.png");
+	cRocket YellowSprite;
+	YellowSprite.attachInputMgr(theInputMgr); // Attach the input manager to the sprite
+	YellowSprite.setSpritePos(glm::vec2(390.0f, 240.0f));
+	YellowSprite.setTexture(yellowTxt.getTexture());
+	YellowSprite.setTextureDimensions(yellowTxt.getTWidth(), yellowTxt.getTHeight());
+	YellowSprite.setSpriteCentre();
+	YellowSprite.setRocketVelocity(glm::vec2(0.0f, 0.0f));
 
 	// Attach sound manager to rocket sprite
-	rocketSprite.attachSoundMgr(theSoundMgr);
+	BlueSprite.attachSoundMgr(theSoundMgr);
+	GreenSprite.attachSoundMgr(theSoundMgr);
+	RedSprite.attachSoundMgr(theSoundMgr);
+	YellowSprite.attachSoundMgr(theSoundMgr);
 
     //This is the mainloop, we render frames until isRunning returns false
 	while (pgmWNDMgr->isWNDRunning())
@@ -142,7 +176,10 @@ int WINAPI WinMain(HINSTANCE hInstance,
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		spriteBkgd.render();
 
-		rocketSprite.update(elapsedTime);
+		BlueSprite.update(elapsedTime);
+		GreenSprite.update(elapsedTime);
+		RedSprite.update(elapsedTime);
+		YellowSprite.update(elapsedTime);
 
 		vector<cAsteroid*>::iterator asteroidIterator = theAsteroids.begin();
 		while (asteroidIterator != theAsteroids.end())
@@ -159,8 +196,11 @@ int WINAPI WinMain(HINSTANCE hInstance,
 			}
 		}
 
-		rocketSprite.render();
-		theFontMgr->getFont("Space")->printText("Asteriods", FTPoint(0.0f, -1.0f, 0.0f));
+		BlueSprite.render();
+		GreenSprite.render();
+		RedSprite.render();
+		YellowSprite.render();
+		//theFontMgr->getFont("Space")->printText("Asteriods", FTPoint(0.0f, -1.0f, 0.0f));
 
 		pgmWNDMgr->swapBuffers();
 		theInputMgr->clearBuffers(theInputMgr->KEYS_DOWN_BUFFER | theInputMgr->KEYS_PRESSED_BUFFER);
