@@ -41,23 +41,24 @@ Update the sprite position
 
 void cRocket::update(float deltaTime)
 {
-	/*
+	m_SoundMgr->getSnd("Theme")->playAudio(AL_TRUE);
 	if (m_InputMgr->isKeyDown(VK_RIGHT))
 	{
-		spriteRotation += 5.0f;
+		//spriteRotation += 5.0f;
 	}
 	if (m_InputMgr->isKeyDown(VK_LEFT))
 	{
-		spriteRotation -= 5.0f;
+		//spriteRotation -= 5.0f;
 	}
 	if (m_InputMgr->isKeyDown(VK_UP))
 	{
-		spriteTranslation = (glm::vec2(2.0f, 2.0f));
+		//spriteTranslation = (glm::vec2(2.0f, 2.0f));
 	}
 	if (m_InputMgr->isKeyDown(VK_DOWN))
 	{
-		spriteTranslation = -(glm::vec2(2.0f, 2.0f));
+		//spriteTranslation = -(glm::vec2(2.0f, 2.0f));
 	}
+	/*
 	if (m_InputMgr->isKeyDown(int('A')))
 	{
 		spriteScaling += 0.2f;

@@ -81,9 +81,9 @@ int WINAPI WinMain(HINSTANCE hInstance,
 
 	// load game sounds
 	// Load Sound
-	LPCSTR gameSounds[3] = { "Audio/who10Edit.wav", "Audio/shot007.wav", "Audio/explosion2.wav" };
+	LPCSTR gameSounds[3] = { "Audio/Space_Coast.mp3", "Audio/shot007.wav", "Audio/explosion2.wav" };
 
-	//theSoundMgr->add("Theme", gameSounds[0]);
+	theSoundMgr->add("Theme", gameSounds[0]);
 	theSoundMgr->add("Shot", gameSounds[1]);
 	theSoundMgr->add("Explosion", gameSounds[2]);
 
@@ -119,45 +119,49 @@ int WINAPI WinMain(HINSTANCE hInstance,
 	spriteBkgd.setTexture(textureBkgd.getTexture());
 	spriteBkgd.setTextureDimensions(textureBkgd.getTWidth(), textureBkgd.getTHeight());
 
+	//Up
 	cTexture blueTxt;
 	blueTxt.createTexture("Images\\BlueSprite_245x245.png");
 	cRocket BlueSprite;
 	BlueSprite.attachInputMgr(theInputMgr); // Attach the input manager to the sprite
-	BlueSprite.setSpritePos(glm::vec2(645.0f, 495.0f));
+	BlueSprite.setSpritePos(glm::vec2(517.5f, 225.0f));
 	BlueSprite.setTexture(blueTxt.getTexture());
 	BlueSprite.setTextureDimensions(blueTxt.getTWidth(), blueTxt.getTHeight());
 	BlueSprite.setSpriteCentre();
-	BlueSprite.setRocketVelocity(glm::vec2(0.0f, 0.0f));
+	//BlueSprite.setRocketVelocity(glm::vec2(0.0f, 0.0f));
 
+	//Down
 	cTexture redTxt;
 	redTxt.createTexture("Images\\RedSprite_245x245.png");
 	cRocket RedSprite;
 	RedSprite.attachInputMgr(theInputMgr); // Attach the input manager to the sprite
-	RedSprite.setSpritePos(glm::vec2(645.0f, 240.0f));
+	RedSprite.setSpritePos(glm::vec2(517.5f, 475.0f));
 	RedSprite.setTexture(redTxt.getTexture());
 	RedSprite.setTextureDimensions(redTxt.getTWidth(), redTxt.getTHeight());
 	RedSprite.setSpriteCentre();
-	RedSprite.setRocketVelocity(glm::vec2(0.0f, 0.0f));
+	//RedSprite.setRocketVelocity(glm::vec2(0.0f, 0.0f));
 
+	//Right
 	cTexture greenTxt;
 	greenTxt.createTexture("Images\\GreenSprite_245x245.png");
 	cRocket GreenSprite;
 	GreenSprite.attachInputMgr(theInputMgr); // Attach the input manager to the sprite
-	GreenSprite.setSpritePos(glm::vec2(390.0f, 495.0f));
+	GreenSprite.setSpritePos(glm::vec2(765.0f, 345.0f));
 	GreenSprite.setTexture(greenTxt.getTexture());
 	GreenSprite.setTextureDimensions(greenTxt.getTWidth(), greenTxt.getTHeight());
 	GreenSprite.setSpriteCentre();
-	GreenSprite.setRocketVelocity(glm::vec2(0.0f, 0.0f));
+	//GreenSprite.setRocketVelocity(glm::vec2(0.0f, 0.0f));
 
+	//Left
 	cTexture yellowTxt;
 	yellowTxt.createTexture("Images\\YellowSprite_245x245.png");
 	cRocket YellowSprite;
 	YellowSprite.attachInputMgr(theInputMgr); // Attach the input manager to the sprite
-	YellowSprite.setSpritePos(glm::vec2(390.0f, 240.0f));
+	YellowSprite.setSpritePos(glm::vec2(270.0f, 345.0f));
 	YellowSprite.setTexture(yellowTxt.getTexture());
 	YellowSprite.setTextureDimensions(yellowTxt.getTWidth(), yellowTxt.getTHeight());
 	YellowSprite.setSpriteCentre();
-	YellowSprite.setRocketVelocity(glm::vec2(0.0f, 0.0f));
+	//YellowSprite.setRocketVelocity(glm::vec2(0.0f, 0.0f));
 
 	// Attach sound manager to rocket sprite
 	BlueSprite.attachSoundMgr(theSoundMgr);
