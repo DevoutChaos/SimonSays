@@ -20,6 +20,10 @@ public:
 	void update(float deltaTime);		// Rocket update method
 	void setRocketVelocity(glm::vec2 rocketVel);   // Sets the velocity for the rocket
 	glm::vec2 getRocketVelocity();				 // Gets the rocket velocity
+	bool leftPressed;
+	bool rightPressed;
+	bool upPressed;
+	bool downPressed;
 
 };
 #endif

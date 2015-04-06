@@ -6,10 +6,7 @@ cRocket.cpp
 */
 #include "cRocket.h"
 
-bool leftPressed = false;
-bool rightPressed = false;
-bool upPressed = false;
-bool downPressed = false;
+
 
 void cRocket::render()
 {
@@ -49,24 +46,37 @@ void cRocket::update(float deltaTime)
 	m_SoundMgr->getSnd("Theme")->playAudio(AL_TRUE);
 	if (m_InputMgr->isKeyDown(VK_RIGHT))
 	{
-		//spriteRotation += 5.0f;
 		rightPressed = true;
+	}
+	else
+	{
+		rightPressed = false;
 	}
 	if (m_InputMgr->isKeyDown(VK_LEFT))
 	{
-		//spriteRotation -= 5.0f;
 		leftPressed = true;
+	}
+	else
+	{
+		leftPressed = false;
 	}
 	if (m_InputMgr->isKeyDown(VK_UP))
 	{
-		//spriteTranslation = (glm::vec2(2.0f, 2.0f));
 		upPressed = true;
+	}
+	else
+	{
+		upPressed = false;
 	}
 	if (m_InputMgr->isKeyDown(VK_DOWN))
 	{
-		//spriteTranslation = -(glm::vec2(2.0f, 2.0f));
 		downPressed = true;
 	}
+	else
+	{
+		downPressed = false;
+	}
+	
 	/*
 	if (m_InputMgr->isKeyDown(int('A')))
 	{

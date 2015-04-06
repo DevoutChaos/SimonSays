@@ -212,6 +212,10 @@ int WINAPI WinMain(HINSTANCE hInstance,
 	GreenSprite.attachSoundMgr(theSoundMgr);
 	RedSprite.attachSoundMgr(theSoundMgr);
 	YellowSprite.attachSoundMgr(theSoundMgr);
+	BlueFlash.attachSoundMgr(theSoundMgr);
+	GreenFlash.attachSoundMgr(theSoundMgr);
+	RedFlash.attachSoundMgr(theSoundMgr);
+	YellowFlash.attachSoundMgr(theSoundMgr);
 
     //This is the mainloop, we render frames until isRunning returns false
 	while (pgmWNDMgr->isWNDRunning())
@@ -228,6 +232,10 @@ int WINAPI WinMain(HINSTANCE hInstance,
 		GreenSprite.update(elapsedTime);
 		RedSprite.update(elapsedTime);
 		YellowSprite.update(elapsedTime);
+		BlueFlash.update(elapsedTime);
+		GreenFlash.update(elapsedTime);
+		RedFlash.update(elapsedTime);
+		YellowFlash.update(elapsedTime);
 
 		vector<cAsteroid*>::iterator asteroidIterator = theAsteroids.begin();
 		while (asteroidIterator != theAsteroids.end())
@@ -244,10 +252,44 @@ int WINAPI WinMain(HINSTANCE hInstance,
 			}
 		}
 
+		
 		BlueSprite.render();
 		GreenSprite.render();
 		RedSprite.render();
 		YellowSprite.render();
+		if (GreenSprite.rightPressed == true)
+		{
+			for (int i = 0; i < 2000; i++)
+			{
+				GreenFlash.render();
+				GreenFlash.update(elapsedTime);
+			}
+		}
+		if (RedSprite.downPressed == true)
+		{
+			for (int i = 0; i < 2000; i++)
+			{
+				RedFlash.render();
+				RedFlash.update(elapsedTime);
+			}
+		}
+		if (BlueSprite.upPressed == true)
+		{
+			for (int i = 0; i < 2000; i++)
+			{
+				BlueFlash.render();
+				BlueFlash.update(elapsedTime);
+			}
+		}
+		if (YellowSprite.leftPressed == true)
+		{
+			for (int i = 0; i < 2000; i++)
+			{
+				YellowFlash.render();
+				YellowFlash.update(elapsedTime);
+			}
+		}
+		
 		//theFontMgr->getFont("Space")->printText("Asteriods", FTPoint(0.0f, -1.0f, 0.0f));
 
 		pgmWNDMgr->swapBuffers();
