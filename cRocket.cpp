@@ -6,6 +6,11 @@ cRocket.cpp
 */
 #include "cRocket.h"
 
+bool leftPressed = false;
+bool rightPressed = false;
+bool upPressed = false;
+bool downPressed = false;
+
 void cRocket::render()
 {
 	glPushMatrix();
@@ -45,18 +50,22 @@ void cRocket::update(float deltaTime)
 	if (m_InputMgr->isKeyDown(VK_RIGHT))
 	{
 		//spriteRotation += 5.0f;
+		rightPressed = true;
 	}
 	if (m_InputMgr->isKeyDown(VK_LEFT))
 	{
 		//spriteRotation -= 5.0f;
+		leftPressed = true;
 	}
 	if (m_InputMgr->isKeyDown(VK_UP))
 	{
 		//spriteTranslation = (glm::vec2(2.0f, 2.0f));
+		upPressed = true;
 	}
 	if (m_InputMgr->isKeyDown(VK_DOWN))
 	{
 		//spriteTranslation = -(glm::vec2(2.0f, 2.0f));
+		downPressed = true;
 	}
 	/*
 	if (m_InputMgr->isKeyDown(int('A')))

@@ -163,6 +163,50 @@ int WINAPI WinMain(HINSTANCE hInstance,
 	YellowSprite.setSpriteCentre();
 	//YellowSprite.setRocketVelocity(glm::vec2(0.0f, 0.0f));
 
+	//Up
+	cTexture blueFlashTxt;
+	blueTxt.createTexture("Images\\BlueFlash_245x245.png");
+	cRocket BlueFlash;
+	BlueFlash.attachInputMgr(theInputMgr); // Attach the input manager to the sprite
+	BlueFlash.setSpritePos(glm::vec2(517.5f, 225.0f));
+	BlueFlash.setTexture(blueTxt.getTexture());
+	BlueFlash.setTextureDimensions(blueTxt.getTWidth(), blueTxt.getTHeight());
+	BlueFlash.setSpriteCentre();
+	//BlueFlash.setRocketVelocity(glm::vec2(0.0f, 0.0f));
+
+	//Down
+	cTexture redFlashTxt;
+	redTxt.createTexture("Images\\RedFlash_245x245.png");
+	cRocket RedFlash;
+	RedFlash.attachInputMgr(theInputMgr); // Attach the input manager to the sprite
+	RedFlash.setSpritePos(glm::vec2(517.5f, 475.0f));
+	RedFlash.setTexture(redTxt.getTexture());
+	RedFlash.setTextureDimensions(redTxt.getTWidth(), redTxt.getTHeight());
+	RedFlash.setSpriteCentre();
+	//RedFlash.setRocketVelocity(glm::vec2(0.0f, 0.0f));
+
+	//Right
+	cTexture greenFlashTxt;
+	greenTxt.createTexture("Images\\GreenFlash_245x245.png");
+	cRocket GreenFlash;
+	GreenFlash.attachInputMgr(theInputMgr); // Attach the input manager to the sprite
+	GreenFlash.setSpritePos(glm::vec2(765.0f, 345.0f));
+	GreenFlash.setTexture(greenTxt.getTexture());
+	GreenFlash.setTextureDimensions(greenTxt.getTWidth(), greenTxt.getTHeight());
+	GreenFlash.setSpriteCentre();
+	//GreenFlash.setRocketVelocity(glm::vec2(0.0f, 0.0f));
+
+	//Left
+	cTexture yellowFlashTxt;
+	yellowTxt.createTexture("Images\\YellowFlash_245x245.png");
+	cRocket YellowFlash;
+	YellowFlash.attachInputMgr(theInputMgr); // Attach the input manager to the Flash
+	YellowFlash.setSpritePos(glm::vec2(270.0f, 345.0f));
+	YellowFlash.setTexture(yellowTxt.getTexture());
+	YellowFlash.setTextureDimensions(yellowTxt.getTWidth(), yellowTxt.getTHeight());
+	YellowFlash.setSpriteCentre();
+	//YellowFlash.setRocketVelocity(glm::vec2(0.0f, 0.0f));
+
 	// Attach sound manager to rocket sprite
 	BlueSprite.attachSoundMgr(theSoundMgr);
 	GreenSprite.attachSoundMgr(theSoundMgr);

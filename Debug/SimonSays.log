@@ -1,8 +1,14 @@
-﻿Build started 05/04/2015 14:03:26.
+﻿Build started 06/04/2015 15:49:06.
      1>Project "C:\Users\Liam\Desktop\SimonSays\SimonSays\SimonSays.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt cRocket.cpp main.cpp
          main.cpp
+         cRocket.cpp
+     1>c:\users\liam\desktop\simonsays\simonsays\crocket.cpp(28): warning C4244: 'argument' : conversion from 'int' to 'GLfloat', possible loss of data
+     1>c:\users\liam\desktop\simonsays\simonsays\crocket.cpp(30): warning C4244: 'argument' : conversion from 'int' to 'GLfloat', possible loss of data
+     1>c:\users\liam\desktop\simonsays\simonsays\crocket.cpp(32): warning C4244: 'argument' : conversion from 'int' to 'GLfloat', possible loss of data
+     1>c:\users\liam\desktop\simonsays\simonsays\crocket.cpp(34): warning C4244: 'argument' : conversion from 'int' to 'GLfloat', possible loss of data
+         Generating Code...
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Liam\Desktop\SimonSays\Debug\SimonSays.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Liam\Desktop\SimonSays\Debug\SimonSays.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Liam\Desktop\SimonSays\Debug\SimonSays.lib" /MACHINE:X86 Debug\asteroidsGame.obj
          Debug\cAsteroid.obj
@@ -31,4 +37,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:01.82
+Time Elapsed 00:00:02.96
