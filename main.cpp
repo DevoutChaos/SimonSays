@@ -266,23 +266,19 @@ int WINAPI WinMain(HINSTANCE hInstance,
 		if (GreenSprite.rightPressed == true)
 		{
 				GreenFlash.render();
-				GreenFlash.update(elapsedTime);
 		}
 		if (RedSprite.downPressed == true)
 		{
 				RedFlash.render();
-				RedFlash.update(elapsedTime);
 			
 		}
 		if (BlueSprite.upPressed == true)
 		{
 				BlueFlash.render();
-				BlueFlash.update(elapsedTime);
 		}
 		if (YellowSprite.leftPressed == true)
 		{
 				YellowFlash.render();
-				YellowFlash.update(elapsedTime);
 		}
 		
 		//theFontMgr->getFont("Space")->printText("Asteriods", FTPoint(0.0f, -1.0f, 0.0f));
