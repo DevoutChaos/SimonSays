@@ -7,7 +7,6 @@ cRocket.cpp
 #include "cRocket.h"
 
 
-
 void cRocket::render()
 {
 	glPushMatrix();
@@ -47,6 +46,8 @@ void cRocket::update(float deltaTime)
 	if (m_InputMgr->isKeyDown(VK_RIGHT))
 	{
 		rightPressed = true;
+		i++;
+		cout << "rightPress: " << i << "\n";
 	}
 	else
 	{
@@ -55,6 +56,8 @@ void cRocket::update(float deltaTime)
 	if (m_InputMgr->isKeyDown(VK_LEFT))
 	{
 		leftPressed = true;
+		x++;
+		cout << "leftPress: " << x << "\n";
 	}
 	else
 	{
@@ -63,6 +66,8 @@ void cRocket::update(float deltaTime)
 	if (m_InputMgr->isKeyDown(VK_UP))
 	{
 		upPressed = true;
+		y++;
+		cout << "upPress: " << y << "\n";
 	}
 	else
 	{
@@ -71,6 +76,8 @@ void cRocket::update(float deltaTime)
 	if (m_InputMgr->isKeyDown(VK_DOWN))
 	{
 		downPressed = true;
+		z++;
+		cout << "downPress: " << z << "\n";
 	}
 	else
 	{

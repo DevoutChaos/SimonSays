@@ -2,7 +2,7 @@
 #define WIN32_EXTRA_LEAN
 
 #define GLX_GLXEXT_LEGACY //Must be declared so that our local glxext.h is picked up, rather than the system one
-
+#define _CRT_SECURE_NO_WARNINGS
 
 #include <windows.h>
 #include "windowOGL.h"
@@ -19,6 +19,12 @@ int WINAPI WinMain(HINSTANCE hInstance,
                    LPSTR cmdLine,
                    int cmdShow)
 {
+	
+	//for debug
+	AllocConsole();
+	AttachConsole(GetCurrentProcessId());
+	freopen("CON", "w", stdout);
+	
 
     //Set our window settings
     const int windowWidth = 1024;
@@ -165,45 +171,45 @@ int WINAPI WinMain(HINSTANCE hInstance,
 
 	//Up
 	cTexture blueFlashTxt;
-	blueTxt.createTexture("Images\\BlueFlash_245x245.png");
+	blueFlashTxt.createTexture("Images\\BlueFlash_245x245.png");
 	cRocket BlueFlash;
 	BlueFlash.attachInputMgr(theInputMgr); // Attach the input manager to the sprite
 	BlueFlash.setSpritePos(glm::vec2(517.5f, 225.0f));
-	BlueFlash.setTexture(blueTxt.getTexture());
-	BlueFlash.setTextureDimensions(blueTxt.getTWidth(), blueTxt.getTHeight());
+	BlueFlash.setTexture(blueFlashTxt.getTexture());
+	BlueFlash.setTextureDimensions(blueFlashTxt.getTWidth(), blueFlashTxt.getTHeight());
 	BlueFlash.setSpriteCentre();
 	//BlueFlash.setRocketVelocity(glm::vec2(0.0f, 0.0f));
 
 	//Down
 	cTexture redFlashTxt;
-	redTxt.createTexture("Images\\RedFlash_245x245.png");
+	redFlashTxt.createTexture("Images\\RedFlash_245x245.png");
 	cRocket RedFlash;
 	RedFlash.attachInputMgr(theInputMgr); // Attach the input manager to the sprite
 	RedFlash.setSpritePos(glm::vec2(517.5f, 475.0f));
-	RedFlash.setTexture(redTxt.getTexture());
-	RedFlash.setTextureDimensions(redTxt.getTWidth(), redTxt.getTHeight());
+	RedFlash.setTexture(redFlashTxt.getTexture());
+	RedFlash.setTextureDimensions(redFlashTxt.getTWidth(), redFlashTxt.getTHeight());
 	RedFlash.setSpriteCentre();
 	//RedFlash.setRocketVelocity(glm::vec2(0.0f, 0.0f));
 
 	//Right
 	cTexture greenFlashTxt;
-	greenTxt.createTexture("Images\\GreenFlash_245x245.png");
+	greenFlashTxt.createTexture("Images\\GreenFlash_245x245.png");
 	cRocket GreenFlash;
 	GreenFlash.attachInputMgr(theInputMgr); // Attach the input manager to the sprite
 	GreenFlash.setSpritePos(glm::vec2(765.0f, 345.0f));
-	GreenFlash.setTexture(greenTxt.getTexture());
-	GreenFlash.setTextureDimensions(greenTxt.getTWidth(), greenTxt.getTHeight());
+	GreenFlash.setTexture(greenFlashTxt.getTexture());
+	GreenFlash.setTextureDimensions(greenFlashTxt.getTWidth(), greenFlashTxt.getTHeight());
 	GreenFlash.setSpriteCentre();
 	//GreenFlash.setRocketVelocity(glm::vec2(0.0f, 0.0f));
 
 	//Left
 	cTexture yellowFlashTxt;
-	yellowTxt.createTexture("Images\\YellowFlash_245x245.png");
+	yellowFlashTxt.createTexture("Images\\YellowFlash_245x245.png");
 	cRocket YellowFlash;
 	YellowFlash.attachInputMgr(theInputMgr); // Attach the input manager to the Flash
 	YellowFlash.setSpritePos(glm::vec2(270.0f, 345.0f));
-	YellowFlash.setTexture(yellowTxt.getTexture());
-	YellowFlash.setTextureDimensions(yellowTxt.getTWidth(), yellowTxt.getTHeight());
+	YellowFlash.setTexture(yellowFlashTxt.getTexture());
+	YellowFlash.setTextureDimensions(yellowFlashTxt.getTWidth(), yellowFlashTxt.getTHeight());
 	YellowFlash.setSpriteCentre();
 	//YellowFlash.setRocketVelocity(glm::vec2(0.0f, 0.0f));
 
@@ -259,35 +265,24 @@ int WINAPI WinMain(HINSTANCE hInstance,
 		YellowSprite.render();
 		if (GreenSprite.rightPressed == true)
 		{
-			for (int i = 0; i < 2000; i++)
-			{
 				GreenFlash.render();
 				GreenFlash.update(elapsedTime);
-			}
 		}
 		if (RedSprite.downPressed == true)
 		{
-			for (int i = 0; i < 2000; i++)
-			{
 				RedFlash.render();
 				RedFlash.update(elapsedTime);
-			}
+			
 		}
 		if (BlueSprite.upPressed == true)
 		{
-			for (int i = 0; i < 2000; i++)
-			{
 				BlueFlash.render();
 				BlueFlash.update(elapsedTime);
-			}
 		}
 		if (YellowSprite.leftPressed == true)
 		{
-			for (int i = 0; i < 2000; i++)
-			{
 				YellowFlash.render();
 				YellowFlash.update(elapsedTime);
-			}
 		}
 		
 		//theFontMgr->getFont("Space")->printText("Asteriods", FTPoint(0.0f, -1.0f, 0.0f));
