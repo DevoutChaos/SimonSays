@@ -13,17 +13,13 @@ cRocket.h
 class cRocket : public cSprite
 {
 private:
-	glm::vec2 rocketVelocity = glm::vec2(0.0f, 0.0f);
-	int i = 0;
-	int x = 0;
-	int y = 0;
-	int z = 0;
+	//glm::vec2 rocketVelocity = glm::vec2(0.0f, 0.0f);
 
 public:
 	void render();		// Default render function
 	void update(float deltaTime);		// Rocket update method
-	void setRocketVelocity(glm::vec2 rocketVel);   // Sets the velocity for the rocket
-	glm::vec2 getRocketVelocity();				 // Gets the rocket velocity
+	//void setRocketVelocity(glm::vec2 rocketVel);   // Sets the velocity for the rocket
+	//glm::vec2 getRocketVelocity();				 // Gets the rocket velocity
 	bool leftPressed;
 	bool rightPressed;
 	bool upPressed;

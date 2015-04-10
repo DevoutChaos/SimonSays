@@ -14,6 +14,11 @@
 #include "cSprite.h"
 #include "asteroidsGame.h"
 
+bool ylwRender = false;
+bool redRender = false;
+bool bluRender = false;
+bool grnRender = false;
+
 int WINAPI WinMain(HINSTANCE hInstance,
                    HINSTANCE hPrevInstance,
                    LPSTR cmdLine,
@@ -231,8 +236,58 @@ int WINAPI WinMain(HINSTANCE hInstance,
         //We get the time that passed since the last frame
 		float elapsedTime = pgmWNDMgr->getElapsedSeconds();
 
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		spriteBkgd.render();
+		//for (float i = 0; i < (elapsedTime * 10); i++)
+		//{
+		
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+			spriteBkgd.render();
+			if (GreenSprite.rightPressed == true)
+			{
+				cout << "Right Render" << "\n";
+				GreenFlash.render();
+			}
+			else
+			{
+				GreenSprite.render();
+			}
+
+			if (RedSprite.downPressed == true)
+			{
+				cout << "Down Render" << "\n";
+				RedFlash.render();
+			}
+			else
+			{
+				RedSprite.render();
+			}
+
+			if (BlueSprite.upPressed == true)
+			{
+				cout << "Up Render" << "\n";
+				BlueFlash.render();
+			}
+			else
+			{
+				BlueSprite.render();
+			}
+
+			if (YellowSprite.leftPressed == true)
+			{
+				cout << "Left Render" << "\n";
+				YellowFlash.render();
+			}
+			else
+			{
+				YellowSprite.render();
+			}
+
+		//}
+
+		GreenSprite.rightPressed = false;
+		YellowSprite.leftPressed = false;
+		BlueSprite.upPressed = false;
+		RedSprite.downPressed = false;
 
 		BlueSprite.update(elapsedTime);
 		GreenSprite.update(elapsedTime);
@@ -243,44 +298,8 @@ int WINAPI WinMain(HINSTANCE hInstance,
 		RedFlash.update(elapsedTime);
 		YellowFlash.update(elapsedTime);
 
-		vector<cAsteroid*>::iterator asteroidIterator = theAsteroids.begin();
-		while (asteroidIterator != theAsteroids.end())
-		{
-			if ((*asteroidIterator)->isActive() == false)
-			{
-				asteroidIterator = theAsteroids.erase(asteroidIterator);
-			}
-			else
-			{
-				(*asteroidIterator)->update(elapsedTime);
-				(*asteroidIterator)->render();
-				++asteroidIterator;
-			}
-		}
-
 		
-		BlueSprite.render();
-		GreenSprite.render();
-		RedSprite.render();
-		YellowSprite.render();
-		if (GreenSprite.rightPressed == true)
-		{
-				GreenFlash.render();
-		}
-		if (RedSprite.downPressed == true)
-		{
-				RedFlash.render();
 			
-		}
-		if (BlueSprite.upPressed == true)
-		{
-				BlueFlash.render();
-		}
-		if (YellowSprite.leftPressed == true)
-		{
-				YellowFlash.render();
-		}
-		
 		//theFontMgr->getFont("Space")->printText("Asteriods", FTPoint(0.0f, -1.0f, 0.0f));
 
 		pgmWNDMgr->swapBuffers();

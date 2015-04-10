@@ -46,43 +46,26 @@ void cRocket::update(float deltaTime)
 	if (m_InputMgr->isKeyDown(VK_RIGHT))
 	{
 		rightPressed = true;
-		i++;
-		cout << "rightPress: " << i << "\n";
-	}
-	else
-	{
-		rightPressed = false;
+		cout << "Right Call" << "\n";
 	}
 	if (m_InputMgr->isKeyDown(VK_LEFT))
 	{
 		leftPressed = true;
-		x++;
-		cout << "leftPress: " << x << "\n";
-	}
-	else
-	{
-		leftPressed = false;
+		cout << "Left Call" << "\n";
 	}
 	if (m_InputMgr->isKeyDown(VK_UP))
 	{
 		upPressed = true;
-		y++;
-		cout << "upPress: " << y << "\n";
-	}
-	else
-	{
-		upPressed = false;
+		cout << "Up Call" << "\n";
 	}
 	if (m_InputMgr->isKeyDown(VK_DOWN))
 	{
 		downPressed = true;
-		z++;
-		cout << "downPress: " << z << "\n";
+		cout << "Down Call" << "\n";
 	}
-	else
-	{
-		downPressed = false;
-	}
+	
+	
+}
 	
 	/*
 	if (m_InputMgr->isKeyDown(int('A')))
@@ -112,12 +95,13 @@ void cRocket::update(float deltaTime)
 		m_SoundMgr->getSnd("Shot")->playAudio(AL_TRUE);
 	}
 	*/
-
+	/*
 	if (spriteRotation > 360)
 	{
 		spriteRotation -= 360.0f;
 	}
-
+	*/
+	/*
 	glm::vec2 spriteVelocityAdd = glm::vec2(0.0f, 0.0f);
 	spriteVelocityAdd.x = (glm::sin(glm::radians(spriteRotation)));
 	spriteVelocityAdd.y = -(glm::cos(glm::radians(spriteRotation)));
@@ -129,12 +113,13 @@ void cRocket::update(float deltaTime)
 	spritePos2D += rocketVelocity * deltaTime;
 
 	rocketVelocity *= 0.95;
-
+	*/
 	/*
 	==============================================================
 	| Check for collisions
 	==============================================================
 	*/
+	/*
 	for (vector<cBullet*>::iterator bulletIterartor = theRocketBullets.begin(); bulletIterartor != theRocketBullets.end(); ++bulletIterartor)
 	{
 		(*bulletIterartor)->update(deltaTime);
@@ -166,21 +151,26 @@ void cRocket::update(float deltaTime)
 		}
 	}
 }
+*/
 /*
 =================================================================
   Sets the velocity for the rocket
 =================================================================
 */
+	/*
 void cRocket::setRocketVelocity(glm::vec2 rocketVel)
 {
 	rocketVelocity = rocketVel;
 }
+*/
 /*
 =================================================================
   Gets the rocket velocity
 =================================================================
 */
+/*
 glm::vec2 cRocket::getRocketVelocity()
 {
 	return rocketVelocity;
 }
+*/
