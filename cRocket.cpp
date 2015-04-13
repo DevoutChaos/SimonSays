@@ -46,22 +46,18 @@ void cRocket::update(float deltaTime)
 	if (m_InputMgr->isKeyDown(VK_RIGHT))
 	{
 		rightPressed = true;
-		cout << "Right Call" << "\n";
 	}
 	if (m_InputMgr->isKeyDown(VK_LEFT))
 	{
 		leftPressed = true;
-		cout << "Left Call" << "\n";
 	}
 	if (m_InputMgr->isKeyDown(VK_UP))
 	{
 		upPressed = true;
-		cout << "Up Call" << "\n";
 	}
 	if (m_InputMgr->isKeyDown(VK_DOWN))
 	{
 		downPressed = true;
-		cout << "Down Call" << "\n";
 	}
 	
 	

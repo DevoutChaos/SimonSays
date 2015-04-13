@@ -13,32 +13,37 @@
 #include "cFontMgr.h"
 #include "cSprite.h"
 #include "asteroidsGame.h"
+#include "cEnemy.h"
 
+//Declarations
 bool ylwRender = false;
 bool redRender = false;
 bool bluRender = false;
 bool grnRender = false;
+bool playersTurn = false;
+int lives = 3;
+string playerInput[10];
 
 int WINAPI WinMain(HINSTANCE hInstance,
-                   HINSTANCE hPrevInstance,
-                   LPSTR cmdLine,
-                   int cmdShow)
+	HINSTANCE hPrevInstance,
+	LPSTR cmdLine,
+	int cmdShow)
 {
-	
+
 	//for debug
 	AllocConsole();
 	AttachConsole(GetCurrentProcessId());
 	freopen("CON", "w", stdout);
-	
-
-    //Set our window settings
-    const int windowWidth = 1024;
-    const int windowHeight = 768;
-    const int windowBPP = 16;
 
 
+	//Set our window settings
+	const int windowWidth = 1024;
+	const int windowHeight = 768;
+	const int windowBPP = 16;
 
-    //This is our window
+
+
+	//This is our window
 	static cWNDManager* pgmWNDMgr = cWNDManager::getInstance();
 
 	// This is the input manager
@@ -51,30 +56,30 @@ int WINAPI WinMain(HINSTANCE hInstance,
 	static cFontMgr* theFontMgr = cFontMgr::getInstance();
 
 	//The example OpenGL code
-    windowOGL theOGLWnd;
-	
-    //Attach our the OpenGL window
+	windowOGL theOGLWnd;
+
+	//Attach our the OpenGL window
 	pgmWNDMgr->attachOGLWnd(&theOGLWnd);
 
 	// Attach the keyboard manager
 	pgmWNDMgr->attachInputMgr(theInputMgr);
 
-    //Attempt to create the window
+	//Attempt to create the window
 	if (!pgmWNDMgr->createWND(windowWidth, windowHeight, windowBPP))
-    {
-        //If it fails
+	{
+		//If it fails
 
-        MessageBox(NULL, "Unable to create the OpenGL Window", "An error occurred", MB_ICONERROR | MB_OK);
+		MessageBox(NULL, "Unable to create the OpenGL Window", "An error occurred", MB_ICONERROR | MB_OK);
 		pgmWNDMgr->destroyWND(); //Reset the display and exit
-        return 1;
-    }
+		return 1;
+	}
 
 	if (!theOGLWnd.initOGL(windowWidth, windowHeight)) //Initialize our example
-    {
-        MessageBox(NULL, "Could not initialize the application", "An error occurred", MB_ICONERROR | MB_OK);
+	{
+		MessageBox(NULL, "Could not initialize the application", "An error occurred", MB_ICONERROR | MB_OK);
 		pgmWNDMgr->destroyWND(); //Reset the display and exit
-        return 1;
-    }
+		return 1;
+	}
 
 	//Clear key buffers
 	theInputMgr->clearBuffers(theInputMgr->KEYS_DOWN_BUFFER | theInputMgr->KEYS_PRESSED_BUFFER);
@@ -109,19 +114,21 @@ int WINAPI WinMain(HINSTANCE hInstance,
 	/*
 	for (int astro = 0; astro < 5; astro++)
 	{
-		theAsteroids.push_back(new cAsteroid);
-		theAsteroids[astro]->setSpritePos(glm::vec2(windowWidth / (rand() % 5 + 1), windowHeight / (rand() % 5 + 1)));
-		theAsteroids[astro]->setSpriteTranslation(glm::vec2((rand() % 4 + 1), (rand() % 4 + 1)));
-		int randAsteroid = rand() % 4;
-		theAsteroids[astro]->setTexture(theGameTextures[randAsteroid]->getTexture());
-		theAsteroids[astro]->setTextureDimensions(theGameTextures[randAsteroid]->getTWidth(), theGameTextures[randAsteroid]->getTHeight());
-		theAsteroids[astro]->setSpriteCentre();
-		theAsteroids[astro]->setAsteroidVelocity(glm::vec2(glm::vec2(0.0f, 0.0f)));
-		theAsteroids[astro]->setActive(true);
-		theAsteroids[astro]->setMdlRadius();
+	theAsteroids.push_back(new cAsteroid);
+	theAsteroids[astro]->setSpritePos(glm::vec2(windowWidth / (rand() % 5 + 1), windowHeight / (rand() % 5 + 1)));
+	theAsteroids[astro]->setSpriteTranslation(glm::vec2((rand() % 4 + 1), (rand() % 4 + 1)));
+	int randAsteroid = rand() % 4;
+	theAsteroids[astro]->setTexture(theGameTextures[randAsteroid]->getTexture());
+	theAsteroids[astro]->setTextureDimensions(theGameTextures[randAsteroid]->getTWidth(), theGameTextures[randAsteroid]->getTHeight());
+	theAsteroids[astro]->setSpriteCentre();
+	theAsteroids[astro]->setAsteroidVelocity(glm::vec2(glm::vec2(0.0f, 0.0f)));
+	theAsteroids[astro]->setActive(true);
+	theAsteroids[astro]->setMdlRadius();
 	}
 	*/
 
+	//Initialise the computer
+	cEnemy computer;
 
 	cTexture textureBkgd;
 	textureBkgd.createTexture("Images\\BackGround_1280x720.png");
@@ -228,28 +235,34 @@ int WINAPI WinMain(HINSTANCE hInstance,
 	RedFlash.attachSoundMgr(theSoundMgr);
 	YellowFlash.attachSoundMgr(theSoundMgr);
 
-    //This is the mainloop, we render frames until isRunning returns false
+	//This is the mainloop, we render frames until isRunning returns false
 	while (pgmWNDMgr->isWNDRunning())
-    {
+	{
 		pgmWNDMgr->processWNDEvents(); //Process any window events
 
-        //We get the time that passed since the last frame
+		//We get the time that passed since the last frame
 		float elapsedTime = pgmWNDMgr->getElapsedSeconds();
 
-		//for (float i = 0; i < (elapsedTime * 10); i++)
-		//{
-		
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-			spriteBkgd.render();
+		spriteBkgd.render();
+		GreenSprite.render();
+		RedSprite.render();
+		BlueSprite.render();
+		YellowSprite.render();
+
+		if (!playersTurn)
+		{
+			computer.SetPattern();
+			computer.DisplayPattern();
+			playersTurn = true;
+		}
+		else if (playersTurn)
+		{
 			if (GreenSprite.rightPressed == true)
 			{
 				cout << "Right Render" << "\n";
 				GreenFlash.render();
-			}
-			else
-			{
-				GreenSprite.render();
 			}
 
 			if (RedSprite.downPressed == true)
@@ -257,19 +270,11 @@ int WINAPI WinMain(HINSTANCE hInstance,
 				cout << "Down Render" << "\n";
 				RedFlash.render();
 			}
-			else
-			{
-				RedSprite.render();
-			}
 
 			if (BlueSprite.upPressed == true)
 			{
 				cout << "Up Render" << "\n";
 				BlueFlash.render();
-			}
-			else
-			{
-				BlueSprite.render();
 			}
 
 			if (YellowSprite.leftPressed == true)
@@ -277,12 +282,12 @@ int WINAPI WinMain(HINSTANCE hInstance,
 				cout << "Left Render" << "\n";
 				YellowFlash.render();
 			}
-			else
-			{
-				YellowSprite.render();
-			}
-
-		//}
+		}
+		else
+		{
+			cout << "Panic" << "\n";
+		}
+		
 
 		GreenSprite.rightPressed = false;
 		YellowSprite.leftPressed = false;
@@ -298,16 +303,16 @@ int WINAPI WinMain(HINSTANCE hInstance,
 		RedFlash.update(elapsedTime);
 		YellowFlash.update(elapsedTime);
 
-		
-			
+
+
 		//theFontMgr->getFont("Space")->printText("Asteriods", FTPoint(0.0f, -1.0f, 0.0f));
 
 		pgmWNDMgr->swapBuffers();
 		theInputMgr->clearBuffers(theInputMgr->KEYS_DOWN_BUFFER | theInputMgr->KEYS_PRESSED_BUFFER);
-    }
+	}
 
 	theOGLWnd.shutdown(); //Free any resources
 	pgmWNDMgr->destroyWND(); //Destroy the program window
 
-    return 0; //Return success
+	return 0; //Return success
 }

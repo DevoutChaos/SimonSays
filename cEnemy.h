@@ -7,7 +7,6 @@ class cEnemy
 {
 private:
 	string colourPicker[4];
-	string colourHolder[10];
 	int tempNo;
 	int counter;
 
@@ -15,6 +14,7 @@ public:
 	void SetPattern();
 	void DisplayPattern();
 	int turnCount = 1;
+	string colourHolder[10];
 };
 
 #endif
