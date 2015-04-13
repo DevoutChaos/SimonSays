@@ -13,14 +13,12 @@
 
 void cEnemy::SetPattern()
 {
-	for (int i = 0; i < turnCount; i++)
-	{
-		//Add colour to pattern
-		string colourPicker[] = { "Red", "Yellow", "Green", "Blue" };
-		srand(time(NULL));
-		tempNo = (rand() % 4);
-		colourHolder[i] = colourPicker[tempNo];
-	}
+	//Add colour to pattern
+	i = turnCount-1;
+	string colourPicker[] = { "Red", "Yellow", "Green", "Blue" };
+	srand(time(NULL));
+	tempNo = (rand() % 4);
+	colourHolder[i] = colourPicker[tempNo];
 }
 
 void cEnemy::DisplayPattern()

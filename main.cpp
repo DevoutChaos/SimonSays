@@ -4,6 +4,10 @@
 #define GLX_GLXEXT_LEGACY //Must be declared so that our local glxext.h is picked up, rather than the system one
 #define _CRT_SECURE_NO_WARNINGS
 
+#include <iomanip>
+#include <locale>
+#include <sstream>
+#include <string>
 #include <windows.h>
 #include "windowOGL.h"
 #include "GameConstants.h"
@@ -21,6 +25,12 @@ bool redRender = false;
 bool bluRender = false;
 bool grnRender = false;
 bool playersTurn = false;
+bool bothFinished = false;
+bool playerChecked = false;
+int correctCount = 0;
+int curLoc = 0;
+int counted = 0;
+int score = 0;
 int lives = 3;
 string playerInput[10];
 
@@ -109,23 +119,6 @@ int WINAPI WinMain(HINSTANCE hInstance,
 
 	theFontMgr->addFont("SevenSeg", gameFonts[0], 24);
 	theFontMgr->addFont("Space", gameFonts[1], 24);
-
-	// Create vector array of textures
-	/*
-	for (int astro = 0; astro < 5; astro++)
-	{
-	theAsteroids.push_back(new cAsteroid);
-	theAsteroids[astro]->setSpritePos(glm::vec2(windowWidth / (rand() % 5 + 1), windowHeight / (rand() % 5 + 1)));
-	theAsteroids[astro]->setSpriteTranslation(glm::vec2((rand() % 4 + 1), (rand() % 4 + 1)));
-	int randAsteroid = rand() % 4;
-	theAsteroids[astro]->setTexture(theGameTextures[randAsteroid]->getTexture());
-	theAsteroids[astro]->setTextureDimensions(theGameTextures[randAsteroid]->getTWidth(), theGameTextures[randAsteroid]->getTHeight());
-	theAsteroids[astro]->setSpriteCentre();
-	theAsteroids[astro]->setAsteroidVelocity(glm::vec2(glm::vec2(0.0f, 0.0f)));
-	theAsteroids[astro]->setActive(true);
-	theAsteroids[astro]->setMdlRadius();
-	}
-	*/
 
 	//Initialise the computer
 	cEnemy computer;
@@ -253,41 +246,100 @@ int WINAPI WinMain(HINSTANCE hInstance,
 
 		if (!playersTurn)
 		{
+			cout << "Turn No. " << computer.turnCount << "\n";
+			cout << "Computer's turn" << "\n";
 			computer.SetPattern();
 			computer.DisplayPattern();
 			playersTurn = true;
+			cout << "Players Turn" << "\n";
 		}
 		else if (playersTurn)
 		{
-			if (GreenSprite.rightPressed == true)
+				if (GreenSprite.rightPressed == true)
+				{
+					GreenFlash.render();
+					playerInput[curLoc] = "Green";
+					counted++;
+					curLoc++;
+					GreenSprite.rightPressed = false;
+				}
+
+				if (RedSprite.downPressed == true)
+				{
+					RedFlash.render();
+					playerInput[curLoc] = "Red";
+					counted++;
+					curLoc++;
+					RedSprite.downPressed = false;
+				}
+
+				if (BlueSprite.upPressed == true)
+				{
+					BlueFlash.render();
+					playerInput[curLoc] = "Blue";
+					counted++;
+					curLoc++;
+					BlueSprite.upPressed = false;
+				}
+
+				if (YellowSprite.leftPressed == true)
+				{
+					YellowFlash.render();
+					playerInput[curLoc] = "Yellow";
+					counted++;
+					curLoc++;
+					YellowSprite.leftPressed = false;
+				}
+			if (counted == computer.turnCount)
 			{
-				cout << "Right Render" << "\n";
-				GreenFlash.render();
+				for (int q = 0; q < computer.turnCount; q++)
+				{
+					cout << playerInput[q];
+					if (computer.colourHolder[q] == playerInput[q])
+					{
+						cout << "Verified: " << q << "\n";
+						correctCount++;
+					}
+				}
+				cout << "Player Checked" << "\n";
+				playerChecked = true;
 			}
 
-			if (RedSprite.downPressed == true)
+			if (playerChecked)
 			{
-				cout << "Down Render" << "\n";
-				RedFlash.render();
-			}
-
-			if (BlueSprite.upPressed == true)
-			{
-				cout << "Up Render" << "\n";
-				BlueFlash.render();
-			}
-
-			if (YellowSprite.leftPressed == true)
-			{
-				cout << "Left Render" << "\n";
-				YellowFlash.render();
+				if (correctCount == computer.turnCount)
+				{
+					cout << "clearing";
+					for (int c = 0; c < computer.turnCount; c++)
+					{
+						playerInput[c] = "";
+					}
+					computer.turnCount++;
+					score++;
+					correctCount = 0;
+					counted = 0;
+					curLoc = 0;
+					playerChecked = false;
+					playersTurn = false;
+					cout << "\n" << "\n";
+				}
+				else if (correctCount != computer.turnCount)
+				{
+					cout << "clearing";
+					for (int c = 0; c < computer.turnCount; c++)
+					{
+						playerInput[c] = "";
+					}
+					lives--;
+					correctCount = 0;
+					counted = 0;
+					curLoc = 0;
+					playerChecked = false;
+					playersTurn = false;
+					cout << "\n" << "\n";
+				}
 			}
 		}
-		else
-		{
-			cout << "Panic" << "\n";
-		}
-		
 
 		GreenSprite.rightPressed = false;
 		YellowSprite.leftPressed = false;
@@ -303,9 +355,20 @@ int WINAPI WinMain(HINSTANCE hInstance,
 		RedFlash.update(elapsedTime);
 		YellowFlash.update(elapsedTime);
 
+		/*
+		The folllowing line is based on code found at:
+		http://www.cplusplus.com/articles/D9j2Nwbp/
+		*/
+		string String = static_cast<ostringstream*>(&(ostringstream() << score))->str();
+		string baseString = "Score: ";
+		baseString += String;
 
+		string liveString = static_cast<ostringstream*>(&(ostringstream() << lives))->str();
+		string livesString = "Lives: ";
+		livesString += liveString;
 
-		//theFontMgr->getFont("Space")->printText("Asteriods", FTPoint(0.0f, -1.0f, 0.0f));
+		theFontMgr->getFont("Space")->printText(baseString.c_str(), FTPoint(20.0f, -20.0f, 0.0f));
+		theFontMgr->getFont("Space")->printText(livesString.c_str(), FTPoint(200.0f, -20.0f, 0.0f));
 
 		pgmWNDMgr->swapBuffers();
 		theInputMgr->clearBuffers(theInputMgr->KEYS_DOWN_BUFFER | theInputMgr->KEYS_PRESSED_BUFFER);

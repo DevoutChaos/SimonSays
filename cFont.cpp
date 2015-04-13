@@ -66,8 +66,10 @@ void cFont::printText(LPCSTR text, FTPoint textPos)
 {
 	glPushMatrix();
 
-	glColor3f(0.0f, 255.0f, 0.0f);
-	theFont->Render(text,  -1, textPos);
+	glScalef(1.0f, -1.0f, 1.0f);
+
+	glColor3f(255.0f, 255.0f, 0.0f);
+	theFont->Render(text, -1, textPos);
 
 	glPopMatrix();
 }

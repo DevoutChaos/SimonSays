@@ -9,6 +9,7 @@ private:
 	string colourPicker[4];
 	int tempNo;
 	int counter;
+	int i;
 
 public:
 	void SetPattern();
