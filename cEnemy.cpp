@@ -11,6 +11,9 @@
 #include "cEnemy.h"
 
 
+/*
+Sets the pattern for the enemy to follow
+*/
 void cEnemy::SetPattern()
 {
 	//Add colour to pattern
@@ -21,9 +24,12 @@ void cEnemy::SetPattern()
 	colourHolder[i] = colourPicker[tempNo];
 }
 
+/*
+Outputs the pattern to the console window 
+(Should output as "flashes" but I recieved no advice on the issue so this was not added)
+*/
 void cEnemy::DisplayPattern()
 {
-
 	for (int x = 0; x < turnCount; x++)
 	{
 		if (colourHolder[x] == "Red")

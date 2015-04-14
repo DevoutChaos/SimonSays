@@ -42,7 +42,10 @@ Update the sprite position
 
 void cRocket::update(float deltaTime)
 {
+	//Should play some kind of theme tune (I wouldn't know if this works, I can't actually test it)
 	m_SoundMgr->getSnd("Theme")->playAudio(AL_TRUE);
+
+	//The main key commands for the game
 	if (m_InputMgr->isKeyDown(VK_RIGHT))
 	{
 		rightPressed = true;
@@ -59,6 +62,8 @@ void cRocket::update(float deltaTime)
 	{
 		downPressed = true;
 	}	
+	
+	//Key commands for use during the intro, victory and loss scenes
 	if (m_InputMgr->isKeyDown(int('R')))
 	{
 		restartGame = true;

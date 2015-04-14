@@ -20,22 +20,29 @@
 #include "cEnemy.h"
 
 //Declarations
+//Flash render bools
 bool ylwRender = false;
 bool redRender = false;
 bool bluRender = false;
 bool grnRender = false;
+//bools to manage the given "turns" and checking
 bool playersTurn = false;
 bool bothFinished = false;
 bool playerChecked = false;
+//bools which should be used to change "scenes"
+//readyCheck should be false
 bool readyCheck = true;
 bool playTime = true;
 bool playerWin = false;
 bool playerLoss = false;
+//ints used to monitor player inputs, and accuracy compared to the AI
 int correctCount = 0;
 int curLoc = 0;
 int counted = 0;
+//ints used to track player score and lives
 int score = 0;
 int lives = 3;
+//Array to hold all of the players inputs
 string playerInput[10];
 
 int WINAPI WinMain(HINSTANCE hInstance,
@@ -44,7 +51,8 @@ int WINAPI WinMain(HINSTANCE hInstance,
 	int cmdShow)
 {
 
-	//for debug
+	//Code to add the console window
+	//Given that the flashes don't work, this is the only way for the game to actually work now
 	AllocConsole();
 	AttachConsole(GetCurrentProcessId());
 	freopen("CON", "w", stdout);
@@ -103,8 +111,13 @@ int WINAPI WinMain(HINSTANCE hInstance,
 
 	// load game sounds
 	// Load Sound
-	LPCSTR gameSounds[3] = { "Audio/Space_Coast.mp3", "Audio/shot007.wav", "Audio/explosion2.wav" };
+	LPCSTR gameSounds[3] = { "Audio/tetris-gameboy-02.mp3", "Audio/shot007.wav", "Audio/explosion2.wav" };
 
+	/*
+	Theme music obtained from:
+	http://downloads.khinsider.com/game-soundtracks/album/tetris-gameboy-rip-/tetris-gameboy-02.mp3
+	Insert legal jargon about not owning copyright etc here
+	*/
 	theSoundMgr->add("Theme", gameSounds[0]);
 	theSoundMgr->add("Shot", gameSounds[1]);
 	theSoundMgr->add("Explosion", gameSounds[2]);
@@ -113,6 +126,8 @@ int WINAPI WinMain(HINSTANCE hInstance,
 	// Load Fonts
 	LPCSTR gameFonts[2] = { "Fonts/digital-7.ttf", "Fonts/space age.ttf" };
 
+	//Fonts are still the ones included in the lab8 folders.
+	//SevenSeg fits in my opinion
 	theFontMgr->addFont("SevenSeg", gameFonts[0], 24);
 	theFontMgr->addFont("Space", gameFonts[1], 24);
 
@@ -261,6 +276,9 @@ int WINAPI WinMain(HINSTANCE hInstance,
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
+		/*
+		This code should be included, but given that the monitor doesn't accept input, it had to be removed
+		*/
 		/*if (!readyCheck)
 		{
 			spriteRCBkgd.render();
@@ -271,27 +289,34 @@ int WINAPI WinMain(HINSTANCE hInstance,
 				readyCheck = true;
 			}
 		}*/
+
+		//This is the main game, runs only after the player has selected to start the game
 		if (readyCheck && playTime)
 		{
+			//Runs when the player wins
 			if (score == 10)
 			{
 				playerWin = true;
 				playTime = false;
 			}
+			//Runs when the player loses
 			else if (lives == 0)
 			{
 				playerLoss = true;
 				playTime = false;
 			}
 
+			//Renders the main background and sprites
 			spriteBkgd.render();
 			GreenSprite.render();
 			RedSprite.render();
 			BlueSprite.render();
 			YellowSprite.render();
 
+			//Runs for the AI turn
 			if (!playersTurn && playTime)
 			{
+				//Gives the turn No. and also generates and outputs the AIs pattern, before informing the player that it is their turn
 				cout << "Turn No. " << computer.turnCount << "\n";
 				cout << "Computer's turn" << "\n";
 				computer.SetPattern();
@@ -299,14 +324,20 @@ int WINAPI WinMain(HINSTANCE hInstance,
 				playersTurn = true;
 				cout << "Players Turn" << "\n";
 			}
+			//Runs for the player turn
 			else if (playersTurn && playTime)
 			{
+				//Series of if statements to check whether or not the player has pressed the arrow keys
 				if (GreenSprite.rightPressed == true)
 				{
+					//Should flash the appropriate texture on key press (is buggy and only sometimes flashes)
 					GreenFlash.render();
+					//Adds input to the players input array
 					playerInput[curLoc] = "Green";
+					//Increases check values
 					counted++;
 					curLoc++;
+					//Sets this boolean to false so that it should only run once
 					GreenSprite.rightPressed = false;
 				}
 
@@ -336,62 +367,83 @@ int WINAPI WinMain(HINSTANCE hInstance,
 					curLoc++;
 					YellowSprite.leftPressed = false;
 				}
+				//When the player has made the same number of inputs as the AI
 				if (counted == computer.turnCount)
 				{
+					//Loop through all of the inputs
 					for (int q = 0; q < computer.turnCount; q++)
 					{
+						//Reiterate the player outputs
 						cout << playerInput[q];
+						//If the player input matches the AI input for that index
 						if (computer.colourHolder[q] == playerInput[q])
 						{
+							//Notify the player and increase the counter
 							cout << "Verified: " << q << "\n";
 							correctCount++;
 						}
 					}
+					//After the loop has completed switch a boolean, and inform the player
 					cout << "Player Checked" << "\n";
 					playerChecked = true;
 				}
 
+				//After checking the player
 				if (playerChecked)
 				{
+					//If everything was correct
 					if (correctCount == computer.turnCount)
 					{
+						//Inform the player that their array is being cleared
 						cout << "clearing";
+						//Clear the players array
 						for (int c = 0; c < computer.turnCount; c++)
 						{
 							playerInput[c] = "";
 						}
+						//Increase the difficulty by one
 						computer.turnCount++;
+						//Increment score
 						score++;
+						//Reset all values
 						correctCount = 0;
 						counted = 0;
 						curLoc = 0;
 						playerChecked = false;
 						playersTurn = false;
+						//Move down a couple of lines to separate the turns
 						cout << "\n" << "\n";
 					}
 					else if (correctCount != computer.turnCount)
 					{
+						//Inform the player that their array is being cleared
 						cout << "clearing";
+						//Clear the players array
 						for (int c = 0; c < computer.turnCount; c++)
 						{
 							playerInput[c] = "";
 						}
+						//Decrement lives
 						lives--;
+						//Reset all values
 						correctCount = 0;
 						counted = 0;
 						curLoc = 0;
 						playerChecked = false;
 						playersTurn = false;
+						//Move down a couple of lines to separate the turns
 						cout << "\n" << "\n";
 					}
 				}
 			}
 
+			//Ensure that all key presses are reset
 			GreenSprite.rightPressed = false;
 			YellowSprite.leftPressed = false;
 			BlueSprite.upPressed = false;
 			RedSprite.downPressed = false;
 
+			//Run update
 			BlueSprite.update(elapsedTime);
 			GreenSprite.update(elapsedTime);
 			RedSprite.update(elapsedTime);
@@ -404,42 +456,69 @@ int WINAPI WinMain(HINSTANCE hInstance,
 			/*
 			The folllowing line is based on code found at:
 			http://www.cplusplus.com/articles/D9j2Nwbp/
+			Ensures that the score and lives are both output on the game window
 			*/
 			string String = static_cast<ostringstream*>(&(ostringstream() << score))->str();
 			string baseString = "Score: ";
 			baseString += String;
-
 			string liveString = static_cast<ostringstream*>(&(ostringstream() << lives))->str();
 			string livesString = "Lives: ";
 			livesString += liveString;
-
 			//Yeah, I'm too lazy to download another font, but hey, at least I changed the colour
 			theFontMgr->getFont("SevenSeg")->printText(baseString.c_str(), FTPoint(20.0f, -20.0f, 0.0f));
 			theFontMgr->getFont("SevenSeg")->printText(livesString.c_str(), FTPoint(200.0f, -20.0f, 0.0f));
 		}
 
+		//When the player has run out of lives
 		if (playerLoss && !playTime)
 		{
+			//Change "scene"
 			spriteLossBkgd.render();
 			Monitor.render();
+			//Reset the game
 			if (Monitor.restartGame)
 			{
-
+				//Untested for obvious reasons, so I may have missed something
+				computer.turnCount = 1;
+				lives = 3;
+				score = 0;
+				bool playersTurn = false;
+				bool bothFinished = false;
+				bool playerChecked = false;
+				bool readyCheck = true;
+				bool playTime = true;
+				bool playerWin = false;
+				bool playerLoss = false;
 			}
+			//Close the game
 			else if (Monitor.quitGame)
 			{
 				theOGLWnd.shutdown(); //Free any resources
 				pgmWNDMgr->destroyWND(); //Destroy the program window
 			}
 		}
+		//When the player reaches 1- points
 		if (playerWin && !playTime)
 		{
+			//Change "scene"
 			spriteWinBkgd.render();
 			Monitor.render();
+			//Reset the game
 			if (Monitor.restartGame)
 			{
-
+				//Untested for obvious reasons, so I may have missed something
+				computer.turnCount = 1;
+				lives = 3;
+				score = 0;
+				bool playersTurn = false;
+				bool bothFinished = false;
+				bool playerChecked = false;
+				bool readyCheck = true;
+				bool playTime = true;
+				bool playerWin = false;
+				bool playerLoss = false;
 			}
+			//Close the game
 			else if (Monitor.quitGame)
 			{
 				theOGLWnd.shutdown(); //Free any resources
