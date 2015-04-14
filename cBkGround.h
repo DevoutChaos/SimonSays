@@ -14,5 +14,6 @@ class cBkGround : public cSprite
 public:
 	void render();		// Default render function
 	void update(float deltaTime);		// Update method
+	
 };
 #endif

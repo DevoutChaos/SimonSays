@@ -27,6 +27,10 @@ bool grnRender = false;
 bool playersTurn = false;
 bool bothFinished = false;
 bool playerChecked = false;
+bool readyCheck = true;
+bool playTime = true;
+bool playerWin = false;
+bool playerLoss = false;
 int correctCount = 0;
 int curLoc = 0;
 int counted = 0;
@@ -97,14 +101,6 @@ int WINAPI WinMain(HINSTANCE hInstance,
 	/* initialize random seed: */
 	srand((unsigned int)time(NULL));
 
-	// Create vector array of textures
-	LPCSTR texturesToUse[] = { "Images\\asteroid1.png", "Images\\asteroid2.png", "Images\\asteroid3.png", "Images\\asteroid4.png", "Images\\bullet.png" };
-	for (int tCount = 0; tCount < 5; tCount++)
-	{
-		theGameTextures.push_back(new cTexture());
-		theGameTextures[tCount]->createTexture(texturesToUse[tCount]);
-	}
-
 	// load game sounds
 	// Load Sound
 	LPCSTR gameSounds[3] = { "Audio/Space_Coast.mp3", "Audio/shot007.wav", "Audio/explosion2.wav" };
@@ -113,7 +109,7 @@ int WINAPI WinMain(HINSTANCE hInstance,
 	theSoundMgr->add("Shot", gameSounds[1]);
 	theSoundMgr->add("Explosion", gameSounds[2]);
 
-	// load game fontss
+	// load game fonts
 	// Load Fonts
 	LPCSTR gameFonts[2] = { "Fonts/digital-7.ttf", "Fonts/space age.ttf" };
 
@@ -123,12 +119,47 @@ int WINAPI WinMain(HINSTANCE hInstance,
 	//Initialise the computer
 	cEnemy computer;
 
+	//Initialise the game background
 	cTexture textureBkgd;
 	textureBkgd.createTexture("Images\\BackGround_1280x720.png");
 	cBkGround spriteBkgd;
 	spriteBkgd.setSpritePos(glm::vec2(0.0f, 0.0f));
 	spriteBkgd.setTexture(textureBkgd.getTexture());
 	spriteBkgd.setTextureDimensions(textureBkgd.getTWidth(), textureBkgd.getTHeight());
+
+	//Initialise the Pre-Game background
+	cTexture textureRCBkgd;
+	textureRCBkgd.createTexture("Images\\RCheckBackGround_1280x720.png");
+	cBkGround spriteRCBkgd;
+	spriteRCBkgd.setSpritePos(glm::vec2(0.0f, 0.0f));
+	spriteRCBkgd.setTexture(textureRCBkgd.getTexture());
+	spriteRCBkgd.setTextureDimensions(textureRCBkgd.getTWidth(), textureRCBkgd.getTHeight());
+
+	//Initialise the victory background
+	cTexture textureWinBkgd;
+	textureWinBkgd.createTexture("Images\\WinBackGround_1280x720.png");
+	cBkGround spriteWinBkgd;
+	spriteWinBkgd.setSpritePos(glm::vec2(0.0f, 0.0f));
+	spriteWinBkgd.setTexture(textureWinBkgd.getTexture());
+	spriteWinBkgd.setTextureDimensions(textureWinBkgd.getTWidth(), textureWinBkgd.getTHeight());
+
+	//Initialise the loss background
+	cTexture textureLossBkgd;
+	textureLossBkgd.createTexture("Images\\LossBackGround_1280x720.png");
+	cBkGround spriteLossBkgd;
+	spriteLossBkgd.setSpritePos(glm::vec2(0.0f, 0.0f));
+	spriteLossBkgd.setTexture(textureLossBkgd.getTexture());
+	spriteLossBkgd.setTextureDimensions(textureLossBkgd.getTWidth(), textureLossBkgd.getTHeight());
+
+	//Monitor
+	cTexture monitor;
+	monitor.createTexture("Images\\Monitor.png");
+	cRocket Monitor;
+	Monitor.attachInputMgr(theInputMgr); // Attach the input manager to the sprite
+	Monitor.setSpritePos(glm::vec2(517.5f, 225.0f));
+	Monitor.setTexture(monitor.getTexture());
+	Monitor.setTextureDimensions(monitor.getTWidth(), monitor.getTHeight());
+	Monitor.setSpriteCentre();
 
 	//Up
 	cTexture blueTxt;
@@ -139,7 +170,6 @@ int WINAPI WinMain(HINSTANCE hInstance,
 	BlueSprite.setTexture(blueTxt.getTexture());
 	BlueSprite.setTextureDimensions(blueTxt.getTWidth(), blueTxt.getTHeight());
 	BlueSprite.setSpriteCentre();
-	//BlueSprite.setRocketVelocity(glm::vec2(0.0f, 0.0f));
 
 	//Down
 	cTexture redTxt;
@@ -150,7 +180,6 @@ int WINAPI WinMain(HINSTANCE hInstance,
 	RedSprite.setTexture(redTxt.getTexture());
 	RedSprite.setTextureDimensions(redTxt.getTWidth(), redTxt.getTHeight());
 	RedSprite.setSpriteCentre();
-	//RedSprite.setRocketVelocity(glm::vec2(0.0f, 0.0f));
 
 	//Right
 	cTexture greenTxt;
@@ -161,7 +190,6 @@ int WINAPI WinMain(HINSTANCE hInstance,
 	GreenSprite.setTexture(greenTxt.getTexture());
 	GreenSprite.setTextureDimensions(greenTxt.getTWidth(), greenTxt.getTHeight());
 	GreenSprite.setSpriteCentre();
-	//GreenSprite.setRocketVelocity(glm::vec2(0.0f, 0.0f));
 
 	//Left
 	cTexture yellowTxt;
@@ -172,7 +200,6 @@ int WINAPI WinMain(HINSTANCE hInstance,
 	YellowSprite.setTexture(yellowTxt.getTexture());
 	YellowSprite.setTextureDimensions(yellowTxt.getTWidth(), yellowTxt.getTHeight());
 	YellowSprite.setSpriteCentre();
-	//YellowSprite.setRocketVelocity(glm::vec2(0.0f, 0.0f));
 
 	//Up
 	cTexture blueFlashTxt;
@@ -183,7 +210,6 @@ int WINAPI WinMain(HINSTANCE hInstance,
 	BlueFlash.setTexture(blueFlashTxt.getTexture());
 	BlueFlash.setTextureDimensions(blueFlashTxt.getTWidth(), blueFlashTxt.getTHeight());
 	BlueFlash.setSpriteCentre();
-	//BlueFlash.setRocketVelocity(glm::vec2(0.0f, 0.0f));
 
 	//Down
 	cTexture redFlashTxt;
@@ -194,7 +220,6 @@ int WINAPI WinMain(HINSTANCE hInstance,
 	RedFlash.setTexture(redFlashTxt.getTexture());
 	RedFlash.setTextureDimensions(redFlashTxt.getTWidth(), redFlashTxt.getTHeight());
 	RedFlash.setSpriteCentre();
-	//RedFlash.setRocketVelocity(glm::vec2(0.0f, 0.0f));
 
 	//Right
 	cTexture greenFlashTxt;
@@ -205,7 +230,6 @@ int WINAPI WinMain(HINSTANCE hInstance,
 	GreenFlash.setTexture(greenFlashTxt.getTexture());
 	GreenFlash.setTextureDimensions(greenFlashTxt.getTWidth(), greenFlashTxt.getTHeight());
 	GreenFlash.setSpriteCentre();
-	//GreenFlash.setRocketVelocity(glm::vec2(0.0f, 0.0f));
 
 	//Left
 	cTexture yellowFlashTxt;
@@ -216,7 +240,6 @@ int WINAPI WinMain(HINSTANCE hInstance,
 	YellowFlash.setTexture(yellowFlashTxt.getTexture());
 	YellowFlash.setTextureDimensions(yellowFlashTxt.getTWidth(), yellowFlashTxt.getTHeight());
 	YellowFlash.setSpriteCentre();
-	//YellowFlash.setRocketVelocity(glm::vec2(0.0f, 0.0f));
 
 	// Attach sound manager to rocket sprite
 	BlueSprite.attachSoundMgr(theSoundMgr);
@@ -237,24 +260,47 @@ int WINAPI WinMain(HINSTANCE hInstance,
 		float elapsedTime = pgmWNDMgr->getElapsedSeconds();
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-		spriteBkgd.render();
-		GreenSprite.render();
-		RedSprite.render();
-		BlueSprite.render();
-		YellowSprite.render();
-
-		if (!playersTurn)
+		
+		/*if (!readyCheck)
 		{
-			cout << "Turn No. " << computer.turnCount << "\n";
-			cout << "Computer's turn" << "\n";
-			computer.SetPattern();
-			computer.DisplayPattern();
-			playersTurn = true;
-			cout << "Players Turn" << "\n";
-		}
-		else if (playersTurn)
+			spriteRCBkgd.render();
+			Monitor.render();
+			if (Monitor.readyToGo == true)
+			{
+				cout << "Hit ready check";
+				readyCheck = true;
+			}
+		}*/
+		if (readyCheck && playTime)
 		{
+			if (score == 10)
+			{
+				playerWin = true;
+				playTime = false;
+			}
+			else if (lives == 0)
+			{
+				playerLoss = true;
+				playTime = false;
+			}
+
+			spriteBkgd.render();
+			GreenSprite.render();
+			RedSprite.render();
+			BlueSprite.render();
+			YellowSprite.render();
+
+			if (!playersTurn && playTime)
+			{
+				cout << "Turn No. " << computer.turnCount << "\n";
+				cout << "Computer's turn" << "\n";
+				computer.SetPattern();
+				computer.DisplayPattern();
+				playersTurn = true;
+				cout << "Players Turn" << "\n";
+			}
+			else if (playersTurn && playTime)
+			{
 				if (GreenSprite.rightPressed == true)
 				{
 					GreenFlash.render();
@@ -290,85 +336,117 @@ int WINAPI WinMain(HINSTANCE hInstance,
 					curLoc++;
 					YellowSprite.leftPressed = false;
 				}
-			if (counted == computer.turnCount)
-			{
-				for (int q = 0; q < computer.turnCount; q++)
+				if (counted == computer.turnCount)
 				{
-					cout << playerInput[q];
-					if (computer.colourHolder[q] == playerInput[q])
+					for (int q = 0; q < computer.turnCount; q++)
 					{
-						cout << "Verified: " << q << "\n";
-						correctCount++;
+						cout << playerInput[q];
+						if (computer.colourHolder[q] == playerInput[q])
+						{
+							cout << "Verified: " << q << "\n";
+							correctCount++;
+						}
+					}
+					cout << "Player Checked" << "\n";
+					playerChecked = true;
+				}
+
+				if (playerChecked)
+				{
+					if (correctCount == computer.turnCount)
+					{
+						cout << "clearing";
+						for (int c = 0; c < computer.turnCount; c++)
+						{
+							playerInput[c] = "";
+						}
+						computer.turnCount++;
+						score++;
+						correctCount = 0;
+						counted = 0;
+						curLoc = 0;
+						playerChecked = false;
+						playersTurn = false;
+						cout << "\n" << "\n";
+					}
+					else if (correctCount != computer.turnCount)
+					{
+						cout << "clearing";
+						for (int c = 0; c < computer.turnCount; c++)
+						{
+							playerInput[c] = "";
+						}
+						lives--;
+						correctCount = 0;
+						counted = 0;
+						curLoc = 0;
+						playerChecked = false;
+						playersTurn = false;
+						cout << "\n" << "\n";
 					}
 				}
-				cout << "Player Checked" << "\n";
-				playerChecked = true;
 			}
 
-			if (playerChecked)
-			{
-				if (correctCount == computer.turnCount)
-				{
-					cout << "clearing";
-					for (int c = 0; c < computer.turnCount; c++)
-					{
-						playerInput[c] = "";
-					}
-					computer.turnCount++;
-					score++;
-					correctCount = 0;
-					counted = 0;
-					curLoc = 0;
-					playerChecked = false;
-					playersTurn = false;
-					cout << "\n" << "\n";
-				}
-				else if (correctCount != computer.turnCount)
-				{
-					cout << "clearing";
-					for (int c = 0; c < computer.turnCount; c++)
-					{
-						playerInput[c] = "";
-					}
-					lives--;
-					correctCount = 0;
-					counted = 0;
-					curLoc = 0;
-					playerChecked = false;
-					playersTurn = false;
-					cout << "\n" << "\n";
-				}
-			}
+			GreenSprite.rightPressed = false;
+			YellowSprite.leftPressed = false;
+			BlueSprite.upPressed = false;
+			RedSprite.downPressed = false;
+
+			BlueSprite.update(elapsedTime);
+			GreenSprite.update(elapsedTime);
+			RedSprite.update(elapsedTime);
+			YellowSprite.update(elapsedTime);
+			BlueFlash.update(elapsedTime);
+			GreenFlash.update(elapsedTime);
+			RedFlash.update(elapsedTime);
+			YellowFlash.update(elapsedTime);
+
+			/*
+			The folllowing line is based on code found at:
+			http://www.cplusplus.com/articles/D9j2Nwbp/
+			*/
+			string String = static_cast<ostringstream*>(&(ostringstream() << score))->str();
+			string baseString = "Score: ";
+			baseString += String;
+
+			string liveString = static_cast<ostringstream*>(&(ostringstream() << lives))->str();
+			string livesString = "Lives: ";
+			livesString += liveString;
+
+			//Yeah, I'm too lazy to download another font, but hey, at least I changed the colour
+			theFontMgr->getFont("SevenSeg")->printText(baseString.c_str(), FTPoint(20.0f, -20.0f, 0.0f));
+			theFontMgr->getFont("SevenSeg")->printText(livesString.c_str(), FTPoint(200.0f, -20.0f, 0.0f));
 		}
 
-		GreenSprite.rightPressed = false;
-		YellowSprite.leftPressed = false;
-		BlueSprite.upPressed = false;
-		RedSprite.downPressed = false;
+		if (playerLoss && !playTime)
+		{
+			spriteLossBkgd.render();
+			Monitor.render();
+			if (Monitor.restartGame)
+			{
 
-		BlueSprite.update(elapsedTime);
-		GreenSprite.update(elapsedTime);
-		RedSprite.update(elapsedTime);
-		YellowSprite.update(elapsedTime);
-		BlueFlash.update(elapsedTime);
-		GreenFlash.update(elapsedTime);
-		RedFlash.update(elapsedTime);
-		YellowFlash.update(elapsedTime);
+			}
+			else if (Monitor.quitGame)
+			{
+				theOGLWnd.shutdown(); //Free any resources
+				pgmWNDMgr->destroyWND(); //Destroy the program window
+			}
+		}
+		if (playerWin && !playTime)
+		{
+			spriteWinBkgd.render();
+			Monitor.render();
+			if (Monitor.restartGame)
+			{
 
-		/*
-		The folllowing line is based on code found at:
-		http://www.cplusplus.com/articles/D9j2Nwbp/
-		*/
-		string String = static_cast<ostringstream*>(&(ostringstream() << score))->str();
-		string baseString = "Score: ";
-		baseString += String;
-
-		string liveString = static_cast<ostringstream*>(&(ostringstream() << lives))->str();
-		string livesString = "Lives: ";
-		livesString += liveString;
-
-		theFontMgr->getFont("Space")->printText(baseString.c_str(), FTPoint(20.0f, -20.0f, 0.0f));
-		theFontMgr->getFont("Space")->printText(livesString.c_str(), FTPoint(200.0f, -20.0f, 0.0f));
+			}
+			else if (Monitor.quitGame)
+			{
+				theOGLWnd.shutdown(); //Free any resources
+				pgmWNDMgr->destroyWND(); //Destroy the program window
+			}
+		}
+		
 
 		pgmWNDMgr->swapBuffers();
 		theInputMgr->clearBuffers(theInputMgr->KEYS_DOWN_BUFFER | theInputMgr->KEYS_PRESSED_BUFFER);

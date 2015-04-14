@@ -45,6 +45,7 @@ void cRocket::update(float deltaTime)
 	m_SoundMgr->getSnd("Theme")->playAudio(AL_TRUE);
 	if (m_InputMgr->isKeyDown(VK_RIGHT))
 	{
+		cout << "Do you see me?";
 		rightPressed = true;
 	}
 	if (m_InputMgr->isKeyDown(VK_LEFT))
@@ -59,4 +60,17 @@ void cRocket::update(float deltaTime)
 	{
 		downPressed = true;
 	}	
+	if (m_InputMgr->isKeyDown(int('R')))
+	{
+		restartGame = true;
+	}
+	if (m_InputMgr->isKeyDown(int('Q')))
+	{
+		quitGame = true;
+	}
+	if (m_InputMgr->isKeyDown(int('B')))
+	{
+		cout << "Pressed";
+		readyToGo = true;
+	}
 }

@@ -18,4 +18,5 @@ Update the sprite position
 
 void cBkGround::update(float deltaTime)
 {
+	
 }

@@ -22,6 +22,8 @@ public:
 	bool rightPressed;
 	bool upPressed;
 	bool downPressed;
-
+	bool restartGame;
+	bool quitGame;
+	bool readyToGo;
 };
 #endif
